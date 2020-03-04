@@ -5,13 +5,15 @@ import os
 import importlib
 from importlib import machinery
 
+
 def load_mod(file):
     print("loading: " + file)
     name = os.path.splitext(os.path.basename(file))[0]
-    mod = machinery.SourceFileLoader(name, file).load_module()
+    mod = importlib.import_module("." + name, "chinese-poetry")
     mod.do_es_import()
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--connection", action='append', help='set es connections', required=True)
     parser.add_argument("-m", "--module", required=False, default="")
@@ -27,7 +29,6 @@ if __name__ == "__main__":
     else:
         all_pys = [cur_dir + "/es_import_" + args.module + ".py"]
 
-
     for file in all_pys:
         load_mod(file)
-        
+
